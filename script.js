@@ -1,13 +1,17 @@
 // Объявляем переменные
-let money, 
-    income,
-    addExpenses,
-    deposit,
-    mission,
-    period;
+let money = 100500, 
+    income = 'фриланс',
+    addExpenses = 'интернет, такси, комуналка, связь',
+    deposit = true,
+    mission = 100500,
+    period = 6,
+    budgetDay = money / 30;
 
-alert( 'Любой текст!' ); // Выводим модал окно с текстом
-
-console.log('Текст в консоли!'); // Выводим текст в консоль
-console.error('Упс... Произошла ошибка! Скорее всего задание не зачтут! Плак плак...');  // Зато теперь знаю как вывести ошибку в консоль
-
+console.log(typeof money);
+console.log(typeof income);
+console.log(typeof deposit);
+console.log(addExpenses.length);
+console.log(`Период равен ${period} месяцев`);
+console.log(`Цель заработать ${mission} рублей`);
+console.log(addExpenses.toLowerCase().split());
+console.log(budgetDay);
