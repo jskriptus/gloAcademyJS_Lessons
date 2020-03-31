@@ -8,42 +8,29 @@ let money = +prompt('Ваш месячный доход?', '10000'), // Спра
     period = 6, // За какой срок
     budgetDay; // Бюджет на день
 
-const showTypeOf = (item) => {
-    console.log(typeof (item));
-};
-
-showTypeOf(money);
-showTypeOf(income);
-showTypeOf(deposit);
-
 let expensesOne = prompt('Введите обязательную статью расходов'), // Спрашиваем пользователя название первой обязательной статьи рассходов
     amountOne = +prompt('Во сколько это обходится?', '1000'), // Спрашиваем пользователя сумму во сколько обходится первая обязательная статья рассходов
     expensesTwo = prompt('Введите обязательную статью расходов'), // Спрашиваем пользователя название второй обязательной статьи рассходов
     amountTwo = +prompt('Во сколько это обходится?', '1500'); // Спрашиваем пользователя сумму во сколько обходится вторая обязательная статья рассходов
 
-function getExpensesMonth(mandatoryOne, mandatoryTwo) { // Функция возвращает сумму всех обязательных расходов за месяц
+
+const showTypeOf = (item) => {
+    console.log(typeof (item));
+};
+
+const getExpensesMonth = (mandatoryOne, mandatoryTwo) => { // Функция возвращает сумму всех обязательных расходов за месяц
     return mandatoryOne + mandatoryTwo;
 }
 
-console.log('Сумма обязательных рассходов за месяц: ' + getExpensesMonth(amountOne, amountTwo));
-
-console.log(addExpenses.toLowerCase().split(", "));
-
-function getAccumulatedMonth(income, expenses) { // Функция возвращает Накопления за месяц (Доходы минус расходы)
+const getAccumulatedMonth = (income, expenses) => { // Функция возвращает Накопления за месяц (Доходы минус расходы)
     return income - expenses;
 }
 
 const accumulatedMonth = getAccumulatedMonth(money, getExpensesMonth(amountOne, amountTwo)); // присваиваем переменной результат исполнения функции которая считает накопления за месяц 
 
-function getTargetMonth(goal, accumulated) { // Подсчитывает за какой период будет достигнута цель, зная результат месячного накопления accumulatedMonth
+const getTargetMonth = (goal, accumulated) => { // Подсчитывает за какой период будет достигнута цель, зная результат месячного накопления accumulatedMonth
     return Math.ceil(goal / accumulated);
 }
-
-console.log('Цель будет достигнута за: ' + getTargetMonth(mission, accumulatedMonth) + ' месяца(ев)');
-
-budgetDay = Math.floor(accumulatedMonth / 30);
-
-console.log('Бюджет на день: ' +  budgetDay);
 
 const getStatusIncome = () => {
     if (budgetDay >= 1200) { // Определяем уровень дохода пользователя 
@@ -56,5 +43,19 @@ const getStatusIncome = () => {
         return 'Что то пошло не так';
     }
 };
+
+budgetDay = Math.floor(accumulatedMonth / 30);
+
+showTypeOf(money);
+showTypeOf(income);
+showTypeOf(deposit);
+
+console.log('Сумма обязательных рассходов за месяц: ' + getExpensesMonth(amountOne, amountTwo));
+
+console.log(addExpenses.toLowerCase().split(","));
+
+console.log('Цель будет достигнута за: ' + getTargetMonth(mission, accumulatedMonth) + ' месяца(ев)');
+
+console.log('Бюджет на день: ' + budgetDay);
 
 console.log(getStatusIncome());
