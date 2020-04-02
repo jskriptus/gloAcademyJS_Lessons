@@ -1,28 +1,33 @@
 'use strict';
 
-let money, // Спрашиваем у пользователя месячный доход
+let money, // Храним ответ пользователя о месячном доходе
     income = 'фриланс', // Дополнительный доход
-    addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', ''), // Спрашиваем у пользователя возможные дополнительные рассходы
-    deposit = confirm('Есть ли у вас депозит в банке?'), // Спрашиваем пользователя есть ли у него депозит в банке
+    addExpenses, // Храним ответ пользователя о возможных дополнительных рассходах
+    deposit, // Храним ответ пользователя есть ли у него депозит в банке
     mission = 100500, // Какую сумму необходимо накопить (цель)
     period = 6, // За какой срок
-    budgetDay, // Бюджет на день
+    budgetDay, // Храним Бюджет на день
     expenses = []; // Записываем в массив обязательные статьи рассходов
 
 
-const isNumber = (n) => {
-    return !isNaN(parseInt(n)) && isFinite(n);
-};
+function isNumber(n) {
+    if (typeof n !== 'string') {
+        return false;
+    }
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
 
 const start = () => {
     do {
-        money = +prompt('Ваш месячный доход?', '10000');
+        money = prompt('Ваш месячный доход?', '10000');
     }
     while (!isNumber(money));
 };
 
 start();
 
+addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', '');
+deposit = confirm('Есть ли у вас депозит в банке?');
 
 const showTypeOf = (item) => {
     console.log(typeof (item));
@@ -35,10 +40,14 @@ const getExpensesMonth = () => { // Функция возвращает сумм
 
         expenses[i] = prompt('Введите обязательную статью расходов');
 
+        let expensesAmount;
+
         do {
-            result += +prompt('Во сколько это обходится?', '1000');
+            expensesAmount = prompt('Во сколько это обходится?', '1000');
         }
-        while (!isNumber(result));
+        while (!isNumber(expensesAmount));
+        
+        result += +expensesAmount;
     }
 
     return result;
