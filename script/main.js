@@ -37,9 +37,13 @@ let appData = {
 
             do {
                 itemIncome = prompt('Какой у вас есть дополнительный заработок?', 'Таксую');
+            }
+            while (isNumber(itemIncome) || itemIncome === null || itemIncome.trim() === '');
+
+            do {
                 cashIncome = prompt('Сколько в месяц зарабатываете на этом?', '10000');
             }
-            while (isNumber(itemIncome) || itemIncome === null || itemIncome.trim() === '' || !isNumber(cashIncome) || cashIncome.trim() === '' || cashIncome === null);
+            while (!isNumber(cashIncome) || cashIncome.trim() === '' || cashIncome === null)
 
             appData.income[itemIncome] = cashIncome;
         }
@@ -72,10 +76,14 @@ let appData = {
             let cashExpenses;
 
             do {
-                itemExpenses = prompt('Введите обязательную статью расходов в этом месяце', '');
+                itemExpenses = prompt('Введите обязательную статью расходов в этом месяце', '')
+            }
+            while (isNumber(itemExpenses) || itemExpenses === null || itemExpenses.trim() === '');
+
+            do {
                 cashExpenses = prompt('Во сколько обходится?', '');
             }
-            while (isNumber(itemExpenses) || itemExpenses === null || itemExpenses.trim() === '' || !isNumber(cashExpenses) || cashExpenses.trim() === '' || cashExpenses === null);
+            while (!isNumber(cashExpenses) || cashExpenses.trim() === '' || cashExpenses === null)
 
             appData.expenses[itemExpenses] = cashExpenses;
         }
