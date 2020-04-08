@@ -1,5 +1,29 @@
 'use strict';
 
+let startBtn = document.getElementById('start'),
+    incomeAdd = document.querySelector('button')[0],
+    expensesAdd = document.querySelector('button')[1],
+    depositCheckBox = document.getElementById('deposit-check'),
+    additionalIncomeItem = document.querySelectorAll('.additional_income-item'),
+    budgetMonth = document.querySelector('.budget_month-value'),
+    budgetDay = document.querySelector('.budget_day-value'),
+    expensesMonth = document.querySelector('.expenses_month-value'),
+    additionalIncome = document.querySelector('.additional_income-value'),
+    additionalExpenses = document.querySelector('.additional_day-value'),
+    incomePeriod = document.querySelector('.budget_period-value'),
+    targetMonth = document.querySelector('.target_month-value'),
+    salaryAmount = document.querySelector('.salary-amount'),
+    incomeTitle = document.querySelector('.income-title'),
+    incomeAmount = document.querySelector('.income-amount'),
+    additionalIncomeItemOne = document.querySelector('.additional_income-item')[0],
+    additionalIncomeItemTwo = document.querySelector('.additional_income-item')[1],
+    expensesTitle = document.querySelector('.expenses-title'),
+    additionalExpensesItem = document.querySelector('.additional_expenses-item'),
+    targetAmount = document.querySelector('.target-amount'),
+    periodSelect = document.querySelector('.period-select');
+
+
+
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
