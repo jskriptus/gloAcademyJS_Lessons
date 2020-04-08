@@ -23,6 +23,28 @@ let startBtn = document.getElementById('start'), // Кнопка "Рассчит
     targetAmount = document.querySelector('.target-amount'), // Поле Цель
     periodSelect = document.querySelector('.period-select'); // Range
 
+console.log(startBtn);
+console.log(incomeAdd);
+console.log(expensesAdd);
+console.log(depositCheckBox);
+console.log(additionalIncomeItemOne);
+console.log(additionalIncomeItemTwo);
+console.log(budgetMonth);
+console.log(budgetDay);
+console.log(expensesMonth);
+console.log(additionalIncome);
+console.log(additionalExpenses);
+console.log(incomePeriod);
+console.log(targetMonth);
+console.log(salaryAmount);
+console.log(incomeTitle);
+console.log(incomeAmount);
+console.log(expensesTitle);
+console.log(expensesAmount);
+console.log(additionalExpensesItem);
+console.log(targetAmount);
+console.log(periodSelect);
+
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
