@@ -1,28 +1,27 @@
 'use strict';
 
-let startBtn = document.getElementById('start'),
-    incomeAdd = document.querySelector('button')[0],
-    expensesAdd = document.querySelector('button')[1],
-    depositCheckBox = document.getElementById('deposit-check'),
-    additionalIncomeItem = document.querySelectorAll('.additional_income-item'),
-    budgetMonth = document.querySelector('.budget_month-value'),
-    budgetDay = document.querySelector('.budget_day-value'),
-    expensesMonth = document.querySelector('.expenses_month-value'),
-    additionalIncome = document.querySelector('.additional_income-value'),
-    additionalExpenses = document.querySelector('.additional_day-value'),
-    incomePeriod = document.querySelector('.budget_period-value'),
-    targetMonth = document.querySelector('.target_month-value'),
-    salaryAmount = document.querySelector('.salary-amount'),
-    incomeTitle = document.querySelector('.income-title'),
-    incomeAmount = document.querySelector('.income-amount'),
-    additionalIncomeItemOne = document.querySelector('.additional_income-item')[0],
-    additionalIncomeItemTwo = document.querySelector('.additional_income-item')[1],
-    expensesTitle = document.querySelector('.expenses-title'),
-    additionalExpensesItem = document.querySelector('.additional_expenses-item'),
-    targetAmount = document.querySelector('.target-amount'),
-    periodSelect = document.querySelector('.period-select');
-
-
+let startBtn = document.getElementById('start'), // Кнопка "Рассчитать" через id
+    incomeAdd = document.getElementsByTagName('button')[0], // Кнопка “+” (плюс) через Tag 
+    expensesAdd = document.getElementsByTagName('button')[1], // Кнопка “+” (плюс) через Tag
+    depositCheckBox = document.querySelector('#deposit-check'), // Чекбокс 
+    // additionalIncomeItem = document.querySelectorAll('.additional_income-item'), // Поля для ввода возможных доходов
+    additionalIncomeItemOne = document.querySelectorAll('.additional_income-item')[0], // Поле для ввода возможных доходов
+    additionalIncomeItemTwo = document.querySelectorAll('.additional_income-item')[1], // Поле для ввода возможных доходов
+    budgetMonth = document.querySelector('.budget_month-value'), // Поле доход за месяц
+    budgetDay = document.querySelector('.budget_day-value'), // Поле Дневной бюджет
+    expensesMonth = document.querySelector('.expenses_month-value'), // Поле Расходы за месяц
+    additionalIncome = document.querySelector('.additional_income-value'), // Поле Возможные доходы
+    additionalExpenses = document.querySelector('.additional_expenses-value'), // Поле Возможные рассходы
+    incomePeriod = document.querySelector('.income_period-value'), // Поле Накопления за период
+    targetMonth = document.querySelector('.target_month-value'), // Поле Срок достижения цели в месяцах
+    salaryAmount = document.querySelector('.salary-amount'), // Поле Месячный доход
+    incomeTitle = document.querySelector('.income-items > .income-title'), // Поле Дополнительный доход (Наименование)
+    incomeAmount = document.querySelector('.income-items > .income-amount'), // Поле Дополнительный доход (Сумма)
+    expensesTitle = document.querySelector('.expenses-items > .expenses-title'), // Поле Обязательные расходы (Наименование)
+    expensesAmount = document.querySelector('.expenses-items > .expenses-amount'), // Поле Обязательные расходы (Сумма)
+    additionalExpensesItem = document.querySelector('.additional_expenses-item'), // Поле Возможные расходы
+    targetAmount = document.querySelector('.target-amount'), // Поле Цель
+    periodSelect = document.querySelector('.period-select'); // Range
 
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
