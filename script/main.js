@@ -18,7 +18,8 @@ let startBtn = document.getElementById('start'), // Кнопка "Рассчит
     additionalExpensesItem = document.querySelector('.additional_expenses-item'), // Поле Возможные расходы
     targetAmount = document.querySelector('.target-amount'), // Поле Цель
     periodSelect = document.querySelector('.period-select'); // Range
-
+let placeholdersName = document.querySelectorAll('[placeholder*="Наименование"]'),
+    placeholdersAmount = document.querySelectorAll('[placeholder*="Сумма"]');
 
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -76,6 +77,54 @@ let appData = {
         if (incomeItems.length === 3) { // Ограничиваем вывод инпутов Обязательные рассходы до 3
             incomeAdd.style.display = 'none';
         }
+
+        let a = cloneIncomeItems.querySelector('[placeholder*="Наименование"]');
+        let b = cloneIncomeItems.querySelector('[placeholder*="Сумма"]');
+
+        let hint = document.createElement('span');
+        a.addEventListener('input', (event) => {
+            let regExp = /^[\sа-яА-ЯёЁ]+$/gi; // только русские буквы пробелы и знаки препинания
+            let inputValue = event.target.value;
+            let parent = event.target.parentElement;
+
+            if (!regExp.test(inputValue)) {
+                parent.append(hint);
+                hint.style.color = '#F08080';
+                hint.style.fontSize = '14px';
+                hint.innerHTML = '<br>В поле "Наименование" - только русские буквы, пробелы и знаки препинания!';
+
+                startBtn.disabled = true;
+                a.style.backgroundColor = '#F08080';
+            } else {
+                hint.style.color = '';
+                hint.textContent = '';
+
+                startBtn.disabled = false;
+                a.style.backgroundColor = '';
+            }
+        });
+
+        b.addEventListener('input', (event) => {
+            let regExp = /^[0-9]+$/gi; // только цифры
+            let inputValue = event.target.value;
+            let parent = event.target.parentElement;
+    
+            if (!regExp.test(inputValue)) {
+                parent.append(hint);
+                hint.style.color = '#F08080';
+                hint.style.fontSize = '14px';
+                hint.innerHTML = '<br>В поле "Сумма" - только цифры!';
+    
+                startBtn.disabled = true;
+                b.style.backgroundColor = '#F08080';
+            } else {
+                hint.style.color = '';
+                hint.textContent = '';
+    
+                startBtn.disabled = false;
+                b.style.backgroundColor = '';
+            }
+        });
     },
     getIncome: () => {
         incomeItems.forEach((item) => {
@@ -100,6 +149,55 @@ let appData = {
         if (expensesItems.length === 3) { // Ограничиваем вывод инпутов Обязательные рассходы до 3
             expensesAdd.style.display = 'none';
         }
+
+        let a = cloneExpensesItem.querySelector('[placeholder*="Наименование"]');
+        let b = cloneExpensesItem.querySelector('[placeholder*="Сумма"]');
+
+        let hint = document.createElement('span');
+        a.addEventListener('input', (event) => {
+            let regExp = /^[\sа-яА-ЯёЁ]+$/gi; // только русские буквы пробелы и знаки препинания
+            let inputValue = event.target.value;
+            let parent = event.target.parentElement;
+
+            if (!regExp.test(inputValue)) {
+                parent.append(hint);
+                hint.style.color = '#F08080';
+                hint.style.fontSize = '14px';
+                hint.innerHTML = '<br>В поле "Наименование" - только русские буквы, пробелы и знаки препинания!';
+
+                startBtn.disabled = true;
+                a.style.backgroundColor = '#F08080';
+            } else {
+                hint.style.color = '';
+                hint.textContent = '';
+
+                startBtn.disabled = false;
+                a.style.backgroundColor = '';
+            }
+        });
+
+        b.addEventListener('input', (event) => {
+            let regExp = /^[0-9]+$/gi; // только цифры
+            let inputValue = event.target.value;
+            let parent = event.target.parentElement;
+    
+            if (!regExp.test(inputValue)) {
+                parent.append(hint);
+                hint.style.color = '#F08080';
+                hint.style.fontSize = '14px';
+                hint.innerHTML = '<br>В поле "Сумма" - только цифры!';
+    
+                startBtn.disabled = true;
+                b.style.backgroundColor = '#F08080';
+            } else {
+                hint.style.color = '';
+                hint.textContent = '';
+    
+                startBtn.disabled = false;
+                b.style.backgroundColor = '';
+            }
+        });
+
     },
     getExpenses: () => {
         expensesItems.forEach((item) => {
@@ -186,8 +284,8 @@ incomeAdd.addEventListener('click', appData.addIncomeBlock);
 expensesAdd.addEventListener('click', appData.addExpensesBlock);
 periodSelect.addEventListener('input', appData.moveRange);
 
-let placeholdersName = document.querySelectorAll('[placeholder*="Наименование"]'),
-    placeholdersAmount = document.querySelectorAll('[placeholder*="Сумма"]');
+
+
 
 placeholdersName.forEach((item) => {
     let hint = document.createElement('span');
@@ -216,7 +314,7 @@ placeholdersName.forEach((item) => {
 
 placeholdersAmount.forEach((item) => {
     let hint = document.createElement('span');
-    
+
     item.addEventListener('input', (event) => {
         let regExp = /^[0-9]+$/gi; // только цифры
         let inputValue = event.target.value;
