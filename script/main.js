@@ -60,6 +60,7 @@ let appData = {
         additionalExpensesValue.value = this.addExpenses.join(', '); // Показываем на странице возможные статьи рассходов
         additionalIncomeValue.value = this.addIncome.join(', ');
         targetMonthValue.value = this.getTargetMonth();
+        incomePeriodValue.value = this.calcSavedMoney();
 
         periodSelect.addEventListener('input', () => {
             incomePeriodValue.value = this.calcSavedMoney(); // Накомпления за период
@@ -288,7 +289,9 @@ let appData = {
             appData.start();
         }
     },
+    reset: function() {
 
+    }
 };
 
 start.addEventListener('click', appData.checkingCompletion);
