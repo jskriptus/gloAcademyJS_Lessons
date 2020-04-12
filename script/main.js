@@ -197,10 +197,10 @@ placeholdersName.forEach((item) => {
         let parent = event.target.parentElement;
 
         if (!regExp.test(inputValue)) {
-            
             parent.append(hint);
             hint.style.color = '#F08080';
-            hint.innerHTML = '<br>Только русские буквы пробелы и знаки препинания!';
+            hint.style.fontSize = '14px';
+            hint.innerHTML = '<br>В поле "Наименование" - только русские буквы, пробелы и знаки препинания!';
 
             startBtn.disabled = true;
             item.style.backgroundColor = '#F08080';
@@ -225,7 +225,8 @@ placeholdersAmount.forEach((item) => {
         if (!regExp.test(inputValue)) {
             parent.append(hint);
             hint.style.color = '#F08080';
-            hint.innerHTML = '<br>Только цифры!';
+            hint.style.fontSize = '14px';
+            hint.innerHTML = '<br>В поле "Сумма" - только цифры!';
 
             startBtn.disabled = true;
             event.target.style.backgroundColor = '#F08080';
