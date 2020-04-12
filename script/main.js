@@ -17,9 +17,8 @@ let startBtn = document.getElementById('start'), // Кнопка "Рассчит
     expensesItems = document.querySelectorAll('.expenses-items'), // Поля Обязательных расходов
     additionalExpensesItem = document.querySelector('.additional_expenses-item'), // Поле Возможные расходы
     targetAmount = document.querySelector('.target-amount'), // Поле Цель
-    periodSelect = document.querySelector('.period-select'), // Range
-    placeholdersName = document.querySelectorAll('[placeholder*="Наименование"]'),
-    placeholdersAmount = document.querySelectorAll('[placeholder*="Сумма"]');
+    periodSelect = document.querySelector('.period-select'); // Range
+
 
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -187,28 +186,55 @@ incomeAdd.addEventListener('click', appData.addIncomeBlock);
 expensesAdd.addEventListener('click', appData.addExpensesBlock);
 periodSelect.addEventListener('input', appData.moveRange);
 
+let placeholdersName = document.querySelectorAll('[placeholder*="Наименование"]'),
+    placeholdersAmount = document.querySelectorAll('[placeholder*="Сумма"]');
+
 placeholdersName.forEach((item) => {
+    let hint = document.createElement('span');
     item.addEventListener('input', (event) => {
-        let regExp = /^[\sа-яА-ЯёЁ]+$/; // только русские буквы пробелы и знаки препинания
+        let regExp = /^[\sа-яА-ЯёЁ]+$/gi; // только русские буквы пробелы и знаки препинания
         let inputValue = event.target.value;
+        let parent = event.target.parentElement;
+
         if (!regExp.test(inputValue)) {
+            
+            parent.append(hint);
+            hint.style.color = '#F08080';
+            hint.innerHTML = '<br>Только русские буквы пробелы и знаки препинания!';
+
+            startBtn.disabled = true;
             item.style.backgroundColor = '#F08080';
-            alert('Поле принимает только русские буквы, пробелы и знаки препинания!');
         } else {
+            hint.style.color = '';
+            hint.textContent = '';
+
+            startBtn.disabled = false;
             item.style.backgroundColor = '';
         }
     });
 });
 
 placeholdersAmount.forEach((item) => {
+    let hint = document.createElement('span');
+    
     item.addEventListener('input', (event) => {
-        let regExp = /[0-9]/; // только цифры
+        let regExp = /^[0-9]+$/gi; // только цифры
         let inputValue = event.target.value;
+        let parent = event.target.parentElement;
+
         if (!regExp.test(inputValue)) {
-            item.style.backgroundColor = '#F08080';
-            alert('Поле принимает толко цифры!');
+            parent.append(hint);
+            hint.style.color = '#F08080';
+            hint.innerHTML = '<br>Только цифры!';
+
+            startBtn.disabled = true;
+            event.target.style.backgroundColor = '#F08080';
         } else {
-            item.style.backgroundColor = '';
+            hint.style.color = '';
+            hint.textContent = '';
+
+            startBtn.disabled = false;
+            event.target.style.backgroundColor = '';
         }
     });
 });
