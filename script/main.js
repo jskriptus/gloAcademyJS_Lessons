@@ -283,14 +283,25 @@ let appData = {
         periodAmount.textContent = periodSelect.value;
     },
     checkingCompletion: function () {
+        
         if (salaryAmount.value === '') {
             return;
         } else {
             appData.start();
         }
+
+        let textInput = document.querySelectorAll('.data input[type*="text"]');
+        textInput.forEach((item) => {
+            item.disabled = true;
+        });
+        let reset = start.cloneNode(true);
+        reset.textContent = 'Сбросить';
+        start.replaceWith(reset);
+
+        reset.addEventListener('click', appData.reset)
     },
     reset: function() {
-
+        location.reload();
     }
 };
 
@@ -298,6 +309,7 @@ start.addEventListener('click', appData.checkingCompletion);
 incomeAdd.addEventListener('click', appData.addIncomeBlock);
 expensesAdd.addEventListener('click', appData.addExpensesBlock);
 periodSelect.addEventListener('input', appData.moveRange);
+
 
 
 
