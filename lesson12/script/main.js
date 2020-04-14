@@ -17,7 +17,8 @@ let startBtn = document.getElementById('start'), // Кнопка "Рассчит
     expensesItems = document.querySelectorAll('.expenses-items'), // Поля Обязательных расходов
     additionalExpensesItem = document.querySelector('.additional_expenses-item'), // Поле Возможные расходы
     targetAmount = document.querySelector('.target-amount'), // Поле Цель
-    periodSelect = document.querySelector('.period-select'); // Range
+    periodSelect = document.querySelector('.period-select'), // Range
+    periodAmount = document.querySelector('.period-amount'); // 
 
 let placeholdersName = document.querySelectorAll('[placeholder*="Наименование"]'),
     placeholdersAmount = document.querySelectorAll('[placeholder*="Сумма"]');
@@ -283,7 +284,6 @@ let appData = {
         return this.budgetMonth * periodSelect.value;
     },
     moveRange: function () {
-        let periodAmount = document.querySelector('.period-amount');
         periodAmount.textContent = periodSelect.value;
     },
     checkingCompletion: function () {
@@ -308,10 +308,28 @@ let appData = {
         expensesAdd.disabled = true;
         incomeAdd.disabled = true;
 
+        let incomeElements = document.querySelectorAll('.income-items');
+        incomeElements.forEach((item) => {
+            for(let elem of item.children) {
+                elem.disabled = true;
+            }
+        });
+
+        let expensesElements = document.querySelectorAll('.expenses-items');
+        expensesElements.forEach((item) => {
+            for(let elem of item.children) {
+                elem.disabled = true;
+            }
+        });
+
     },
     reset: function () {
         start.style.display = 'block';
         cancel.style.display = 'none';
+
+        periodSelect.disabled = false;
+        expensesAdd.disabled = false;
+        incomeAdd.disabled = false;
 
         textInput.forEach((item) => {
             item.disabled = false;
@@ -336,8 +354,12 @@ let appData = {
             expensesElements[i].parentNode.removeChild(expensesElements[i]);
         }
 
+        incomeAdd.style.display = 'block';
+        expensesAdd.style.display = 'block';
         periodSelect.value = '1';
         periodAmount.textContent = '1';
+
+        
     }
 };
 
