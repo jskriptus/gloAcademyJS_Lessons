@@ -18,8 +18,12 @@ let startBtn = document.getElementById('start'), // Кнопка "Рассчит
     additionalExpensesItem = document.querySelector('.additional_expenses-item'), // Поле Возможные расходы
     targetAmount = document.querySelector('.target-amount'), // Поле Цель
     periodSelect = document.querySelector('.period-select'); // Range
+
 let placeholdersName = document.querySelectorAll('[placeholder*="Наименование"]'),
     placeholdersAmount = document.querySelectorAll('[placeholder*="Сумма"]');
+
+let textInput = document.querySelectorAll('.data input[type*="text"]'),
+    cancel = document.querySelector('#cancel');
 
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -105,7 +109,7 @@ let appData = {
                     placeholderName.style.backgroundColor = '';
                 }
             });
-        }
+        };
         addHintToPlaceholderName();
         const addHintToPlaceholderSum = () => {
             let hint = document.createElement('span');
@@ -130,7 +134,7 @@ let appData = {
                     placeholderSum.style.backgroundColor = '';
                 }
             });
-        }
+        };
         addHintToPlaceholderSum();
     },
     getIncome: function () {
@@ -183,7 +187,7 @@ let appData = {
                     placeholderName.style.backgroundColor = '';
                 }
             });
-        }
+        };
         addHintToPlaceholderName();
         const addHintToPlaceholderSum = () => {
             let hint = document.createElement('span');
@@ -208,7 +212,7 @@ let appData = {
                     placeholderSum.style.backgroundColor = '';
                 }
             });
-        }
+        };
         addHintToPlaceholderSum();
 
     },
@@ -272,7 +276,7 @@ let appData = {
                 this.percentDeposit = prompt('Какой годовой процент вашего депозита?', '10');
                 this.moneyDeposit = prompt('Какая сумма депозита?', '10000');
             }
-            while (!isNumber(this.percentDeposit) || this.percentDeposit === null || this.percentDeposit.trim() === '' || !isNumber(appData.moneyDeposit) || appData.moneyDeposit.trim() === '' || appData.moneyDeposit === null);
+            while (!isNumber(this.percentDeposit) || this.percentDeposit === null || this.percentDeposit.trim() === '' || !isNumber(this.moneyDeposit) || this.moneyDeposit.trim() === '' || this.moneyDeposit === null);
         }
     },
     calcSavedMoney: function () {
@@ -283,33 +287,45 @@ let appData = {
         periodAmount.textContent = periodSelect.value;
     },
     checkingCompletion: function () {
-        
+
         if (salaryAmount.value === '') {
             return;
         } else {
-            appData.start();
+            const foo = () => {
+                return this.start();
+            };
+            foo();
         }
 
-        let textInput = document.querySelectorAll('.data input[type*="text"]');
+        start.style.display = 'none';
+        cancel.style.display = 'block';
+
         textInput.forEach((item) => {
             item.disabled = true;
         });
-        let reset = start.cloneNode(true);
-        reset.textContent = 'Сбросить';
-        start.replaceWith(reset);
-
-        reset.addEventListener('click', appData.reset)
     },
-    reset: function() {
-        location.reload();
+    reset: function () {
+        start.style.display = 'block';
+        cancel.style.display = 'none';
+
+        textInput.forEach((item) => {
+            item.disabled = false;
+            item.value = '';
+        });
+
+        let value = document.querySelectorAll('input[class$="value"]');
+
+        value.forEach((item) => {
+            item.value = '';
+        });
     }
 };
 
-start.addEventListener('click', appData.checkingCompletion);
+start.addEventListener('click', appData.checkingCompletion.bind(appData));
 incomeAdd.addEventListener('click', appData.addIncomeBlock);
 expensesAdd.addEventListener('click', appData.addExpensesBlock);
 periodSelect.addEventListener('input', appData.moveRange);
-
+cancel.addEventListener('click', appData.reset);
 
 
 
