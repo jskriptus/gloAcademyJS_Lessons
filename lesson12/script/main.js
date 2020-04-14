@@ -337,7 +337,7 @@ let appData = {
         }
 
         periodSelect.value = '1';
-        periodAmount.textContent = periodSelect.value;
+        periodAmount.textContent = '1';
     }
 };
 
