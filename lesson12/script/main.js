@@ -303,6 +303,11 @@ let appData = {
         textInput.forEach((item) => {
             item.disabled = true;
         });
+
+        periodSelect.disabled = true;
+        expensesAdd.disabled = true;
+        incomeAdd.disabled = true;
+
     },
     reset: function () {
         start.style.display = 'block';
@@ -318,6 +323,21 @@ let appData = {
         value.forEach((item) => {
             item.value = '';
         });
+
+        let incomeElements = document.querySelectorAll('.income-items');
+
+        for (let i = 1; i < incomeElements.length; i++) {
+            incomeElements[i].parentNode.removeChild(incomeElements[i]);
+        }
+
+        let expensesElements = document.querySelectorAll('.expenses-items');
+
+        for (let i = 1; i < expensesElements.length; i++) {
+            expensesElements[i].parentNode.removeChild(expensesElements[i]);
+        }
+
+        periodSelect.value = '1';
+        periodAmount.textContent = periodSelect.value;
     }
 };
 
