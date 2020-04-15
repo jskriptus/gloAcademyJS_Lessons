@@ -142,7 +142,7 @@ let appData = {
         incomeItems.forEach((item) => {
             let itemIncome = item.querySelector('.income-title').value,
                 cashIncome = item.querySelector('.income-amount').value;
-
+            
             if (itemIncome !== '' && cashIncome !== '') {
                 this.income[itemIncome] = cashIncome;
                 this.incomeMonth += +this.income[itemIncome];
@@ -324,6 +324,20 @@ let appData = {
 
     },
     reset: function () {
+        this.budget = 0;
+        this.budgetDay = 0;
+        this.budgetMonth = 0;
+        this.income = {};
+        this.incomeMonth = 0;
+        this.addIncome = [];
+        this.expenses = {};
+        this.expensesMonth = 0;
+        this.addExpenses = [];
+        this.deposit = false;
+        this.percentDeposit = 0;
+        this.moneyDeposit = 0;
+        this.period = 0;
+
         start.style.display = 'block';
         cancel.style.display = 'none';
 
@@ -359,20 +373,8 @@ let appData = {
         periodSelect.value = '1';
         periodAmount.textContent = '1';
 
+        
 
-
-        this.budget = 0;
-        this.budgetDay = 0;
-        this.budgetMonth = 0;
-        this.income = {};
-        this.incomeMonth = 0;
-        this.addIncome = [];
-        this.expenses = {};
-        this.expensesMonth = 0;
-        this.addExpenses = [];
-        this.deposit = false;
-        this.percentDeposit = 0;
-        this.moneyDeposit = 0;
     }
 };
 
@@ -380,7 +382,7 @@ start.addEventListener('click', appData.checkingCompletion.bind(appData));
 incomeAdd.addEventListener('click', appData.addIncomeBlock);
 expensesAdd.addEventListener('click', appData.addExpensesBlock);
 periodSelect.addEventListener('input', appData.moveRange);
-cancel.addEventListener('click', appData.reset);
+cancel.addEventListener('click', appData.reset.bind(appData));
 
 
 
