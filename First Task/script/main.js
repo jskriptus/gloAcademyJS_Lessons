@@ -18,6 +18,7 @@ class DomElement {
     createElement() { // содержит метод, который создает элемент на странице в зависимости от условия:  
         let body = document.querySelector('body');
         let div = document.createElement('div');
+        let p = document.createElement('p');
         let selector = this.selector;
 
         if (selector[0] === '.') { // если строка selector начинается с точки, создаем div с классом
@@ -35,16 +36,22 @@ class DomElement {
             div.style.cssText = `height: ${this.height};
                                 width: ${this.width};
                                 background: ${this.bg};
-                                font-size: ${this.fontSize}`;
+                                font-size: ${this.fontSize};
+                                position: absolute`;
             div.textContent = "blablabla"; // внутрь созданного блока записывать любой текст. Метод записи может быть любым.
         } else if (selector[0] === '#') { // если строка selector  начинается с решетки # то создаем параграф с id
-            div.setAttribute('id', selector.slice(1));
-            body.insertAdjacentElement('afterbegin', div);
-            div.textContent = "blobloblo";
+            p.setAttribute('id', selector.slice(1));
+            body.insertAdjacentElement('afterbegin', p);
+            p.style.cssText = `height: ${this.height};
+                                width: ${this.width};
+                                background: ${this.bg};
+                                font-size: ${this.fontSize};
+                                position: absolute`;
+            p.textContent = "blobloblo";
         }
     }
 }
 
-const domElement = new DomElement('.blabla', '200px', '200px', 'red', '50px'); // Создать новый объект на основе класса DomElement
+const domElement = new DomElement('#blabla', '200px', '200px', 'red', '25px'); // Создать новый объект на основе класса DomElement
 
 domElement.createElement(); // Вызвать его метод чтобы получить элемент на странице
