@@ -27,10 +27,6 @@ const placeholdersName = document.querySelectorAll('[placeholder*="Наимен�
 const textInput = document.querySelectorAll('.data input[type*="text"]'),
     cancel = document.querySelector('#cancel');
 
-function isNumber(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
 class AppData {
     constructor() {
         this.budget = 0; // Месячный доход
@@ -48,10 +44,13 @@ class AppData {
         this.expensesMonth = 0; // Сумма обязательных рассходов в месяц
     }
 
+    isNumber(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+
     start() {
         this.budget = +salaryAmount.value; // Передаем введенные данные из инпута месячного бюджета в объект
-        this.getIncome(); // Метод записываем Дополнительые доходы в объект
-        this.getExpenses(); // Метод записывает Обязательные рассходы в объект 
+        this.getExpIncome(); // Метод записываем Дополнительые доходы и Обязательные рассходы в объект
         this.getExpensesMonth(); // Метод записвает результат суммы всех обязательных расходов за месяц в обьект
         this.getAddExpenses(); // Метод разбивает на массив введенные в инпут Возможные расходы и добавляет результат в объект
         this.getAddIncome(); // Метод записывает в массив Возможные доходы
@@ -73,6 +72,24 @@ class AppData {
         });
     }
 
+    getExpIncome() {
+        const count = (item) => {
+            const startStr = item.className.split('-')[0];
+            const itemTitle = item.querySelector(`.${startStr}-title`).value,
+                itemAmount = item.querySelector(`.${startStr}-amount`).value;
+            if (itemTitle !== '' && itemAmount !== '') {
+                this[startStr][itemTitle] = itemAmount;
+            }
+        }
+
+        incomeItems.forEach(count);
+        expensesItems.forEach(count);
+
+        for (const key in this.income) {
+            this.incomeMonth += +this.income[key];
+        }
+    }
+
     addIncomeBlock() {
         const cloneIncomeItems = incomeItems[0].cloneNode(true);
 
@@ -87,17 +104,6 @@ class AppData {
         }
     }
 
-    getIncome() {
-        incomeItems.forEach((item) => {
-            const itemIncome = item.querySelector('.income-title').value,
-                cashIncome = item.querySelector('.income-amount').value;
-
-            if (itemIncome !== '' && cashIncome !== '') {
-                this.income[itemIncome] = cashIncome;
-                this.incomeMonth += +this.income[itemIncome];
-            }
-        });
-    }
     addExpensesBlock() {
         const cloneExpensesItem = expensesItems[0].cloneNode(true);
 
@@ -110,17 +116,6 @@ class AppData {
         if (expensesItems.length === 3) { // Ограничиваем вывод инпутов Обязательные рассходы до 3
             expensesAdd.style.display = 'none';
         }
-    }
-
-    getExpenses() {
-        expensesItems.forEach((item) => {
-            const itemExpenses = item.querySelector('.expenses-title').value,
-                cashExpenses = item.querySelector('.expenses-amount').value;
-
-            if (itemExpenses !== '' && cashExpenses !== '') {
-                this.expenses[itemExpenses] = cashExpenses;
-            }
-        });
     }
 
     getAddExpenses() {
@@ -179,7 +174,7 @@ class AppData {
                 this.percentDeposit = prompt('Какой годовой процент вашего депозита?', '10');
                 this.moneyDeposit = prompt('Какая сумма депозита?', '10000');
             }
-            while (!isNumber(this.percentDeposit) || this.percentDeposit === null || this.percentDeposit.trim() === '' || !isNumber(this.moneyDeposit) || this.moneyDeposit.trim() === '' || this.moneyDeposit === null);
+            while (!appData.isNumber(this.percentDeposit) || this.percentDeposit === null || this.percentDeposit.trim() === '' || !appData.isNumber(this.moneyDeposit) || this.moneyDeposit.trim() === '' || this.moneyDeposit === null);
         }
     };
 
