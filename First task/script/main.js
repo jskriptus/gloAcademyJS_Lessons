@@ -297,7 +297,7 @@ class AppData {
             depositPercent.value = '';
         } else {
             depositPercent.style.display = 'none';
-            depositPercent.value = valueSelect;
+            depositPercent.value = valueSelect * 100;
         }
     }
 
@@ -307,7 +307,6 @@ class AppData {
             depositAmount.style.display = 'inline-block';
             this.deposit = true;
             depositPercent.disabled = false;
-            // depositPercent.style.display = 'block';
             depositBank.addEventListener('change', this.changePercent);
             depositPercent.addEventListener('change', () => {
                 if  (isNaN(depositPercent.value) || depositPercent.value <= 0 || depositPercent.value > 100)  {
