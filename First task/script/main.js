@@ -3,7 +3,6 @@
 const startBtn = document.getElementById('start'), // Кнопка "Рассчитать" через id
     incomeAdd = document.getElementsByTagName('button')[0], // Кнопка “+” (плюс) через Tag 
     expensesAdd = document.getElementsByTagName('button')[1], // Кнопка “+” (плюс) через Tag
-    depositCheckBox = document.querySelector('#deposit-check'), // Чекбокс 
     additionalIncomeItem = document.querySelectorAll('.additional_income-item'), // Поле для ввода возможных доходов
     budgetMonthValue = document.querySelectorAll('input[class$="value"]')[0], // Поле доход за месяц
     budgetDayValue = document.querySelectorAll('input[class$="value"]')[1], // Поле Дневной бюджет
@@ -16,13 +15,17 @@ const startBtn = document.getElementById('start'), // Кнопка "Рассчи
     additionalExpensesItem = document.querySelector('.additional_expenses-item'), // Поле Возможные расходы
     targetAmount = document.querySelector('.target-amount'), // Поле Цель
     periodSelect = document.querySelector('.period-select'), // Range
-    periodAmount = document.querySelector('.period-amount'); // 
+    periodAmount = document.querySelector('.period-amount'), // 
+    depositCheck = document.querySelector('#deposit-check'), //  Чекбокс депозита
+    depositBank = document.querySelector('.deposit-bank'),
+    depositAmount = document.querySelector('.deposit-amount'),
+    depositPercent = document.querySelector('.deposit-percent');
 
 let incomeItems = document.querySelectorAll('.income-items'), // Поля Дополнительных доходов
     expensesItems = document.querySelectorAll('.expenses-items'); // Поля Обязательных расходов
 
 const placeholdersName = document.querySelectorAll('[placeholder*="Наименование"]'),
-    placeholdersAmount = document.querySelectorAll('[placeholder*="Сумма"]');
+    placeholdersAmount = document.querySelectorAll('[placeholder*="Сумма"], [placeholder="Процент"]');
 
 const textInput = document.querySelectorAll('.data input[type*="text"]'),
     cancel = document.querySelector('#cancel');
@@ -44,18 +47,16 @@ class AppData {
         this.expensesMonth = 0; // Сумма обязательных рассходов в месяц
     }
 
-    isNumber(n) {
-        return !isNaN(parseFloat(n)) && isFinite(n);
-    }
-
     start() {
         this.budget = +salaryAmount.value; // Передаем введенные данные из инпута месячного бюджета в объект
         this.getExpIncome(); // Метод записываем Дополнительые доходы и Обязательные рассходы в объект
         this.getExpensesMonth(); // Метод записвает результат суммы всех обязательных расходов за месяц в обьект
         this.getAddExpenses(); // Метод разбивает на массив введенные в инпут Возможные расходы и добавляет результат в объект
         this.getAddIncome(); // Метод записывает в массив Возможные доходы
+        this.getInfoDeposit();
         this.getBudget(); // Метод записывает в обьект Накопления за месяц (Месячный доход минус месячные обязательные расходы) и Бюджет на день (Месячный доход делится на 30 дней)
         this.showResult(); // Методо выводит из объектов на страницу
+
     }
 
     showResult() {
@@ -80,7 +81,7 @@ class AppData {
             if (itemTitle !== '' && itemAmount !== '') {
                 this[startStr][itemTitle] = itemAmount;
             }
-        }
+        };
 
         incomeItems.forEach(count);
         expensesItems.forEach(count);
@@ -148,7 +149,8 @@ class AppData {
     }
 
     getBudget() {
-        this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
+        const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
+        this.budgetMonth = Math.floor(this.budget + this.incomeMonth - this.expensesMonth + monthDeposit);
         this.budgetDay = Math.floor(this.budgetMonth / 30);
     }
 
@@ -166,21 +168,18 @@ class AppData {
         } else {
             return 'Что то пошло не так';
         }
-    };
+    }
 
     getInfoDeposit() {
         if (this.deposit) {
-            do {
-                this.percentDeposit = prompt('Какой годовой процент вашего депозита?', '10');
-                this.moneyDeposit = prompt('Какая сумма депозита?', '10000');
-            }
-            while (!appData.isNumber(this.percentDeposit) || this.percentDeposit === null || this.percentDeposit.trim() === '' || !appData.isNumber(this.moneyDeposit) || this.moneyDeposit.trim() === '' || this.moneyDeposit === null);
+            this.percentDeposit = depositPercent.value;
+            this.moneyDeposit = depositAmount.value;   
         }
-    };
+    }
 
     calcSavedMoney() {
         return this.budgetMonth * periodSelect.value;
-    };
+    }
 
     moveRange() {
         this.period = periodSelect.value;
@@ -188,7 +187,7 @@ class AppData {
     }
 
     checkingCompletion() {
-        if (salaryAmount.value === '') {
+        if (salaryAmount.value === '' || depositPercent === '') {
             return;
         } else {
             this.start();
@@ -218,7 +217,14 @@ class AppData {
                 elem.disabled = true;
             }
         });
-    };
+
+        depositBank.disabled = true;
+
+        depositAmount.disbled = true;
+
+        depositCheck.disabled = true;
+
+    }
 
     reset() {
         this.budget = 0;
@@ -269,14 +275,65 @@ class AppData {
         expensesAdd.style.display = 'block';
         periodSelect.value = '1';
         periodAmount.textContent = '1';
+
+        depositBank.disabled = false;
+        depositBank.style.display = 'none';
+
+        depositAmount.disbled = false;
+        depositAmount.style.display = 'none';
+
+        depositCheck.disabled = false;
+        depositCheck.checked = false;
+
+        depositPercent.style.display = 'none';
+        depositPercent.disabled = false;
+        
+    }
+
+    changePercent() {
+        const valueSelect = this.value;
+        if (valueSelect === 'other') {
+            depositPercent.style.display = 'inline-block';
+            depositPercent.value = '';
+        } else {
+            depositPercent.style.display = 'none';
+            depositPercent.value = valueSelect;
+        }
+    }
+
+    depositHandler() {
+        if (depositCheck.checked) {
+            depositBank.style.display = 'inline-block';
+            depositAmount.style.display = 'inline-block';
+            this.deposit = true;
+            depositPercent.disabled = false;
+            // depositPercent.style.display = 'block';
+            depositBank.addEventListener('change', this.changePercent);
+            depositPercent.addEventListener('change', () => {
+                if  (isNaN(depositPercent.value) || depositPercent.value <= 0 || depositPercent.value > 100)  {
+                    alert('Введите корректное значение в поле проценты');
+                }
+            });
+        } else {
+            depositBank.style.display = 'none';
+            depositAmount.style.display = 'none';
+            depositBank.value = '';
+            depositAmount.value = '';
+            this.deposit = false;
+
+            depositBank.removeEventListener('change', this.changePercent);
+        }
     }
 
     myEvenetListeners() {
-        start.addEventListener('click', this.checkingCompletion.bind(appData));
+        start.addEventListener('click', this.checkingCompletion.bind(this));
         incomeAdd.addEventListener('click', this.addIncomeBlock);
         expensesAdd.addEventListener('click', this.addExpensesBlock);
         periodSelect.addEventListener('input', this.moveRange);
-        cancel.addEventListener('click', this.reset.bind(appData));
+        cancel.addEventListener('click', this.reset.bind(this));
+        depositCheck.addEventListener('change', this.depositHandler.bind(this));
+
+        
 
         placeholdersName.forEach((item) => {
             const hint = document.createElement('span');
@@ -289,7 +346,7 @@ class AppData {
                     parent.append(hint);
                     hint.style.color = '#F08080';
                     hint.style.fontSize = '14px';
-                    hint.innerHTML = '<br>В поле "Наименование" - только русские буквы, пробелы и знаки препинания!';
+                    hint.innerHTML = '<br>В поле доступны - только русские буквы, пробелы и знаки препинания!';
 
                     startBtn.disabled = true;
                     item.style.backgroundColor = '#F08080';
@@ -316,7 +373,7 @@ class AppData {
                     parent.append(hint);
                     hint.style.color = '#F08080';
                     hint.style.fontSize = '14px';
-                    hint.innerHTML = '<br>В поле "Сумма" - только цифры!';
+                    hint.innerHTML = '<br>В поле доступны - только цифры!';
 
                     startBtn.disabled = true;
                     event.target.style.backgroundColor = '#F08080';
