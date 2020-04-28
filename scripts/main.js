@@ -47,5 +47,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
     };
 
-    countTimer('02 jule 2021');
+    countTimer('02 july 2020');
 });
