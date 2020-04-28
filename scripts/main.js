@@ -24,29 +24,28 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const timerId = setInterval(updateClock, 1000);
 
+        function formating(value) {
+            if (value >= 0 && value < 10) {
+                return '0' + value;
+            } else if (value < 0) {
+                clearInterval(timerId);
+                return '00';
+            } else {
+                return value;
+            }
+        }
+
         function updateClock() {
             const timer = getTimeRemaining();
 
-            if (timer.seconds > 0 && timer.seconds < 10) {
-                timerSeconds.textContent = '0' + timer.seconds;
-            } else if (timer.hours > 0 && timer.hours < 10) {
-                timerHour.textContent = '0' + timer.hours;
-            } else if (timer.minutes > 0 && timer.minutes < 10) {
-                timerMinutes.textContent = '0' + timer.minutes;
-            } else if (timer.seconds < 0) {
-                timerHour.textContent = '00';
-                timerMinutes.textContent = '00';
-                timerSeconds.textContent = '00';
-                clearInterval(timerId);
-            } else {
-                timerHour.textContent = timer.hours;
-                timerMinutes.textContent = timer.minutes;
-                timerSeconds.textContent = timer.seconds;
-            }
+            timerHour.textContent = formating(timer.hours);
+            timerMinutes.textContent = formating(timer.minutes);
+            timerSeconds.textContent = formating(timer.seconds);
+
         }
 
 
     };
 
-    countTimer('01 jule 2021');
+    countTimer('02 jule 2021');
 });
