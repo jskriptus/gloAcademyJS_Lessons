@@ -23,6 +23,7 @@ const showMessage = () => {
 
     const currentDate = new Date(),
         currentWeekdayInWords = getWeekDay[0].toUpperCase() + getWeekDay.slice(1), // Храним текущий день недели словами
+        time = currentDate.getHours(),
         optTime = {
             hour: '2-digit',
             minute: '2-digit',
@@ -30,14 +31,16 @@ const showMessage = () => {
         },
         currentTime = currentDate.toLocaleTimeString('en', optTime);
 
+    console.log(time);
+
     const getTimeOfDay = () => {
-        if (Number(currentTime.slice(0, 2)) >= 6 && Number(currentTime.slice(0, 2)) < 11 && currentTime.slice(-2) === 'AM') {
+        if (time >= 6 && time < 11) {
             return 'Доброе Утро';
-        } else if (Number(currentTime.slice(0, 2)) >= 11 && Number(currentTime.slice(0, 2)) <= 12 && currentTime.slice(-2) === 'AM' || Number(currentTime.slice(0, 2)) >= 12 && currentTime.slice(-2) === 'PM' || Number(currentTime.slice(0, 2)) >= 0 && Number(currentTime.slice(0, 2)) <= 5 && currentTime.slice(-2) === 'PM') {
+        } else if (time >= 11 && time <= 18) {
             return 'Добрый день';
-        } else if (Number(currentTime.slice(0, 2)) >= 6 && Number(currentTime.slice(0, 2)) < 11 && currentTime.slice(-2) === 'PM') {
+        } else if (time > 18 && time <= 23) {
             return 'Добрый вечер';
-        } else if (Number(currentTime.slice(0, 2)) >= 11 && Number(currentTime.slice(0, 2)) <= 12 && currentTime.slice(-2) === 'PM' || Number(currentTime.slice(0, 2)) >= 12 && currentTime.slice(-2) === 'AM' || Number(currentTime.slice(0, 2)) >= 0 && Number(currentTime.slice(0, 2)) <= 5 && currentTime.slice(-2) === 'AM') {
+        } else if (time > 0 && time < 6) {
             return 'Доброй ночи';
         }
     };
