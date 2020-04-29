@@ -84,14 +84,17 @@ window.addEventListener('DOMContentLoaded', () => {
         const showOrHiddenPopup = () => {
 
             if (!popup.style.display || popup.style.display === 'none') {
-                let translate = -150;
+                let translate = -150; // прячем блок из видимости 
 
                 const animate = setInterval(() => {
                     popup.style.display = 'block';
                     popupContent.style.transform = `translate(${translate += 2}%)`;
-                    console.log(screen.width);
-                    if (translate === 0 || screen.width === 768) {
+
+                    if (translate === 0) {
                         clearInterval(animate);
+                    } 
+                    if (screen.width <= 778) {
+                        popupContent.style.transform = `translate(-15%)`;
                     }
                 }, 2);
             } else {
