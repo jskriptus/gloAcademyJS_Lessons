@@ -51,24 +51,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Меню
     const toggleMenu = () => {
-        const btnMenu = document.querySelector('.menu'),
+        const body = document.querySelector('body'),
+            btnMenu = document.querySelector('.menu'),
             menu = document.querySelector('menu'),
-            closeBtn = document.querySelector('.close-btn'),
             menuItem = menu.querySelectorAll('ul > li');
 
         const showOrClosedMenu = () => {
-            menu.classList.toggle('active-menu');
-            // if (!menu.style.transform || menu.style.transform === 'translate(-100%)') {
-            //     menu.style.transform = 'translate(0)';
-            // } else {
-            //     menu.style.transform = 'translate(-100%)';
-            // }
+            const target = event.target;
+
+            if (target.matches('.close-btn') || btnMenu.contains(target)) {
+                menu.classList.toggle('active-menu');
+            }
+
+            menuItem.forEach(item => {
+                if (item.contains(target)) {
+                    menu.classList.toggle('active-menu');
+                }
+            });
         };
 
-        btnMenu.addEventListener('click', showOrClosedMenu);
-        closeBtn.addEventListener('click', showOrClosedMenu);
+        body.addEventListener('click', showOrClosedMenu);
 
-        menuItem.forEach(item => item.addEventListener('click', showOrClosedMenu));
     };
 
     toggleMenu();
@@ -78,25 +81,26 @@ window.addEventListener('DOMContentLoaded', () => {
         const popup = document.querySelector('.popup'),
             popupBtn = document.querySelectorAll('.popup-btn'),
             popupContent = popup.querySelector('.popup-content'),
-            // formBtn = popup.querySelector('.form-btn'),
             popupClose = popup.querySelector('.popup-close');
 
+        const animatePopUp = () => {
+            let translate = -150; // прячем блок из видимости
+            const animate = setInterval(() => {
+                popup.style.display = 'block';
+                popupContent.style.transform = `translate(${translate += 2}%)`;
+
+                if (translate === 0) {
+                    clearInterval(animate);
+                }
+                if (screen.width <= 778) {
+                    popupContent.style.transform = `translate(-15%)`;
+                }
+            }, 2);
+        };
+
         const showOrHiddenPopup = () => {
-
             if (!popup.style.display || popup.style.display === 'none') {
-                let translate = -150; // прячем блок из видимости 
-
-                const animate = setInterval(() => {
-                    popup.style.display = 'block';
-                    popupContent.style.transform = `translate(${translate += 2}%)`;
-
-                    if (translate === 0) {
-                        clearInterval(animate);
-                    } 
-                    if (screen.width <= 778) {
-                        popupContent.style.transform = `translate(-15%)`;
-                    }
-                }, 2);
+                animatePopUp();
             } else {
                 popup.style.display = 'none';
             }
@@ -107,7 +111,56 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         popupClose.addEventListener('click', showOrHiddenPopup);
+
+        popup.addEventListener('click', event => {
+            let target = event.target;
+            target = target.closest('.popup-content');
+
+            if (!target) {
+                popup.style.display = 'none';
+            }
+        });
     };
 
     togglePopup();
+
+    // табы
+
+    const tabs = () => {
+        const tabHeader = document.querySelector('.service-header'),
+            tab = document.querySelectorAll('.service-header-tab'),
+            tabContent = document.querySelectorAll('.service-tab');
+
+        const toggleTabContent = index => {
+            tabContent.forEach((item, i) => {
+                if (index === i) {
+                    tabContent[i].classList.remove('d-none');
+                    tab[i].classList.add('active');
+                } else {
+                    tabContent[i].classList.add('d-none');
+                    tab[i].classList.remove('active');
+                }
+            });
+        };
+
+        tabHeader.addEventListener('click', event => {
+            let target = event.target;
+            target = target.closest('.service-header-tab');
+
+            if (target) {
+                tab.forEach((item, index) => {
+                    if (item === target) {
+                        toggleTabContent(index);
+                    }
+                });
+            }
+        });
+    };
+
+    tabs();
+
+
 });
+
+
+
