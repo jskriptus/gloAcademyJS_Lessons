@@ -270,16 +270,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const calculator = () => {
         const calcBlock = document.querySelector('.calc-block');
-        calcBlock.addEventListener('change', event => {
+        calcBlock.addEventListener('input', event => {
             const target = event.target;
-            if (target.matches('.calc-item') && !target.matches('.calc-type')) {
-                const regexp = /\d/g;
 
-                if (!regexp.test(target.value)) {
-                    target.style.border = '1px solid #ff6a6a';
-                } else {
-                    target.style.border = '1px solid #19b5fe';
-                }
+            if (target.matches('.calc-item') && !target.matches('.calc-type')) {
+                const regexp = /\D/g;
+
+                target.value = target.value.replace(regexp, '');
             }
         });
     };
