@@ -169,13 +169,13 @@ window.addEventListener('DOMContentLoaded', () => {
         let dots = document.querySelectorAll('.dot');
 
         const addDots = (() => {
-            for (let i = 0; i < slides.length; i++) {
+            slides.forEach(() => {
                 const dot = document.createElement('li');
                 dot.classList.add('dot');
                 portfolioDots.insertAdjacentElement('afterbegin', dot);
+            });
 
-                dots = document.querySelectorAll('.dot');
-            }
+            dots = document.querySelectorAll('.dot');
             dots[0].classList.add('dot-active');
         })();
 
@@ -265,4 +265,45 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     slider();
+
+    // Калькулятор
+
+    const calculator = () => {
+        const calcBlock = document.querySelector('.calc-block');
+        calcBlock.addEventListener('change', event => {
+            const target = event.target;
+            if (target.matches('.calc-item') && !target.matches('.calc-type')) {
+                const regexp = /\d/g;
+
+                if (!regexp.test(target.value)) {
+                    target.style.border = '1px solid #ff6a6a';
+                } else {
+                    target.style.border = '1px solid #19b5fe';
+                }
+            }
+        });
+    };
+
+    calculator();
+
+    // Наша команда
+
+    const theTeam = () => {
+        const imgs = document.querySelectorAll('[data-img]');
+        imgs.forEach(item => {
+            item.addEventListener('mouseover', event => {
+                const target = event.target;
+                const src = target.getAttribute('src');
+
+                target.setAttribute('src', target.dataset.img);
+
+                item.addEventListener('mouseout', () => {
+                    target.setAttribute('src', src);
+                });
+            });
+        });
+
+    };
+
+    theTeam();
 });
