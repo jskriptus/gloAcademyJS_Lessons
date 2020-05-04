@@ -201,8 +201,7 @@
 							<option value="1.4">Интерьер Частного дома</option>
 							<option value="2">Интерьер Офиса</option>
 						</select>
-						<input type="text" min="1" step="1" class="calc-item calc-square"
-							placeholder="Общая площадь*">
+						<input type="text" min="1" step="1" class="calc-item calc-square" placeholder="Общая площадь*">
 						<input type="text" min="1" step="1" class="calc-item calc-count"
 							placeholder="Количество помещений">
 						<input type="text" min="1" step="1" class="calc-item calc-day"
@@ -415,6 +414,74 @@
 	</div>
 
 	<script src="./scripts/main.js"></script>
+	<script src="/scripts/plugins/validator.js"></script>
+	<script>
+		const validForm1 = new Validator({
+			selector: '#form1',
+			pattern: {},
+			method: {
+				'form1-name': [
+					['notEmpty'],
+					['pattern', 'name']
+				],
+				'form1-phone': [
+					['notEmpty'],
+					['pattern', 'phone']
+				],
+				'form1-email': [
+					['notEmpty'],
+					['pattern', 'email']
+				]
+			}
+		});
+		validForm1.init();
+		
+		const validForm2 = new Validator({
+			selector: '#form2',
+			pattern: {},
+			method: {
+				'form2-name': [
+					['notEmpty'],
+					['pattern', 'name']
+				],
+				'form2-message': [
+					['notEmpty'],
+					['pattern', 'message']
+				],
+				'form2-phone': [
+					['notEmpty'],
+					['pattern', 'phone']
+				],
+				'form2-email': [
+					['notEmpty'],
+					['pattern', 'email']
+				]
+			}
+		});
+		validForm2.init();
+
+		const validForm3 = new Validator({
+			selector: '#form3',
+			pattern: {},
+			method: {
+				'form3-name': [
+					['notEmpty'],
+					['pattern', 'name']
+				],
+				'form3-phone': [
+					['notEmpty'],
+					['pattern', 'phone']
+				],
+				'form3-email': [
+					['notEmpty'],
+					['pattern', 'email']
+				]
+			}
+		});
+		validForm3.init();
+	</script>
+	
+	
 </body>
 
 </html>
