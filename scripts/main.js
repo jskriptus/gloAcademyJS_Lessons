@@ -374,6 +374,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const statusMessage = document.createElement('div');
         // Присваиваем этому элементу размер текста
         statusMessage.style.cssText = 'font-size: 2rem;';
+
         // Вешаем обработчик события submit на формы
         forms.forEach(form => {
             form.addEventListener('submit', event => {
@@ -393,11 +394,17 @@ window.addEventListener('DOMContentLoaded', () => {
                 });
 
                 postData(body, () => {
+                    console.log(event.target)
                     statusMessage.textContent = succesMessage;
                     // После отправки инпуты должны очищаться
                     form.reset();
                 }, () => {
-                    statusMessage.textContent = errorMessage;
+                    if (event.target.id === 'form3') {
+                        statusMessage.style.cssText = 'color: white;';
+                        statusMessage.textContent = errorMessage;
+                    } else {
+                        statusMessage.textContent = errorMessage;
+                    }
                 });
             });
         });
@@ -414,7 +421,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 // Проверяем статус. Если запрос отправился успешно, то меняем сообщение на странице.
                 if (request.status === 200) {
                     outputData();
-                    
+
                 } else { // иначе если пришел другой статус - выводим ошибку
                     errorData(request.status);
                 }
@@ -437,7 +444,7 @@ window.addEventListener('DOMContentLoaded', () => {
         forms.forEach(form => {
             form.addEventListener('input', event => {
                 const target = event.target;
-                
+
                 if (target.matches('#form1-phone') || target.matches('#form2-phone') || target.matches('#form3-phone')) {
                     const regexp = /^\+?(\d){0,18}$/g;
                     if (!regexp.test(target.value)) {
