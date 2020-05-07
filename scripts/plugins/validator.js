@@ -1,3 +1,4 @@
+'use strict';
 class Validator {
     constructor({
         selector,
@@ -17,14 +18,14 @@ class Validator {
         this.applyStyle();
         this.setPattern();
         this.inputsForm.forEach(elem => {
-            elem.addEventListener('change', this.checkIt.bind(this))
-        })
-        this.form.addEventListener('submit', (event) => {
-            this.inputsForm.forEach(elem => this.checkIt({target: elem}))
+            elem.addEventListener('change', this.checkIt.bind(this));
+        });
+        this.form.addEventListener('submit', event => {
+            this.inputsForm.forEach(elem => this.checkIt({ target: elem }));
             if (this.error.size) {
                 event.preventDefault();
             }
-        })
+        });
     }
 
     isValid(elem) {
@@ -43,7 +44,7 @@ class Validator {
             const method = this.method[elem.id];
 
             if (method) {
-                return method.every(item => validatorMethod[item[0]](elem, this.pattern[item[1]]))
+                return method.every(item => validatorMethod[item[0]](elem, this.pattern[item[1]]));
             }
         } else {
             console.warn("Необходимо передать id полей ввода и методы проверки этих полей для работы валидатора");
@@ -56,7 +57,7 @@ class Validator {
         const target = event.target;
         if (this.isValid(target)) {
             this.showSuccess(target);
-            this.error.delete(target)
+            this.error.delete(target);
         } else {
             this.showError(target);
             this.error.add(target);
@@ -99,17 +100,17 @@ class Validator {
                 font-family: sans-serif;
                 color: red
             }
-        `
+        `;
         document.head.appendChild(style);
     }
 
     setPattern() {
         if (!this.pattern.name) {
-            this.pattern.name = /[а-яё]/gi
+            this.pattern.name = /[а-яё]/gi;
         }
 
         if (!this.pattern.message) {
-            this.pattern.message = /[а-яё]/gi
+            this.pattern.message = /[а-яё]/gi;
         }
 
 

@@ -360,4 +360,103 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     theTeam();
+
+    // send-ajax-form
+
+    const sendForm = () => {
+        // Сообщения которые уведомляют пользователя
+        const errorMessage = 'Что-то пошло не так...',
+            loadMessage = 'Загрузка...',
+            succesMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+        // Получаем форму
+        const forms = document.querySelectorAll('form');
+        // Создаем элемент который будем добавлять на страницу
+        const statusMessage = document.createElement('div');
+        // Присваиваем этому элементу размер текста
+        statusMessage.style.cssText = 'font-size: 2rem;';
+        // Вешаем обработчик события submit на формы
+        forms.forEach(form => {
+            form.addEventListener('submit', event => {
+                // Убираем стандартное поведение браузера (перезагрузку страницы после нажатия кнопки "Отправить")
+                event.preventDefault();
+                // Добавляем ранее созданный элемент на страницу после формы
+                form.insertAdjacentElement('afterend', statusMessage);
+                // Добавляем сообщение на страницу уведомляющее пользователя о начале загрузки его данных
+                statusMessage.textContent = loadMessage;
+                // Создаем обьект formdata который записывает все введенные данные из формы (из тех инпутов которые содержат атрибут name)
+                const formData = new FormData(form);
+                // Создаем переменную в которой хранится обьект
+                const body = {};
+                // Перебираем данные из обьекта formdata и записываем значения в вышесозданный обьект
+                formData.forEach((item, key) => {
+                    body[key] = item;
+                });
+
+                postData(body, () => {
+                    statusMessage.textContent = succesMessage;
+                    // После отправки инпуты должны очищаться
+                    form.reset();
+                }, () => {
+                    statusMessage.textContent = errorMessage;
+                });
+            });
+        });
+
+        const postData = (body, outputData, errorData) => {
+            // Создаем обьект XMLHttpRequest и присваиваем его переменной request
+            const request = new XMLHttpRequest();
+            // Вешаем обработчик события readystatechange (это событие срабатывает как только меняется статус readystate) на request
+            request.addEventListener('readystatechange', () => {
+                // Проверяем равняется ли статус 4 и если не ровняется мы выходим из этой функции
+                if (request.readyState !== 4) {
+                    return;
+                }
+                // Проверяем статус. Если запрос отправился успешно, то меняем сообщение на странице.
+                if (request.status === 200) {
+                    outputData();
+                    
+                } else { // иначе если пришел другой статус - выводим ошибку
+                    errorData(request.status);
+                }
+            });
+            // Настраиваем запрос. Метод POST к нашему файлу server.php
+            request.open('POST', './server.php');
+            // Настраиваем наш заголовок
+            request.setRequestHeader('Content-Type', 'application/json');
+            // Переводим обьект body в JSON строку и отправляем на сервер
+            request.send(JSON.stringify(body));
+        };
+    };
+
+    sendForm();
+
+    // Валидация форм
+
+    const validationField = () => {
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('input', event => {
+                const target = event.target;
+                
+                if (target.matches('#form1-phone') || target.matches('#form2-phone') || target.matches('#form3-phone')) {
+                    const regexp = /^\+?(\d){0,18}$/g;
+                    if (!regexp.test(target.value)) {
+                        target.value = '';
+                    }
+                }
+
+                if (target.matches('#form1-name') || target.matches('#form2-name') || target.matches('#form3-name') || target.matches('#form2-message')) {
+                    const regexp = /^([а-яё\s]+)$/iu;
+                    if (!regexp.test(target.value)) {
+                        target.value = '';
+                    }
+                }
+            });
+        });
+    };
+
+    validationField();
+
+
+
 });
