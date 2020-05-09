@@ -364,6 +364,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // send-ajax-form
 
     const sendForm = () => {
+
         // Сообщения которые уведомляют пользователя
         const errorMessage = 'Что-то пошло не так...',
             loadMessage = 'Загрузка...',
@@ -383,7 +384,12 @@ window.addEventListener('DOMContentLoaded', () => {
                 // Добавляем ранее созданный элемент на страницу после формы
                 form.insertAdjacentElement('afterend', statusMessage);
                 // Добавляем сообщение на страницу уведомляющее пользователя о начале загрузки его данных
-                statusMessage.textContent = loadMessage;
+                if (event.target.id === 'form3') {
+                    statusMessage.style.color = 'white';
+                    statusMessage.textContent = loadMessage;
+                } else {
+                    statusMessage.textContent = loadMessage;
+                }
                 // Создаем обьект formdata который записывает все введенные данные из формы (из тех инпутов которые содержат атрибут name)
                 const formData = new FormData(form);
                 // Создаем переменную в которой хранится обьект
@@ -393,46 +399,57 @@ window.addEventListener('DOMContentLoaded', () => {
                     body[key] = item;
                 });
 
-                postData(body, () => {
-                    console.log(event.target)
-                    statusMessage.textContent = succesMessage;
-                    // После отправки инпуты должны очищаться
-                    form.reset();
-                }, () => {
+                const outputData = () => {
+                    if (event.target.id === 'form3') {
+                        console.log('object');
+                        statusMessage.style.color = 'white';
+                        statusMessage.textContent = succesMessage;
+                        // После отправки инпуты должны очищаться
+                        form.reset();
+                    } else {
+                        statusMessage.textContent = succesMessage;
+                        // После отправки инпуты должны очищаться
+                        form.reset();
+                    }
+                }, error = (error) => {
                     if (event.target.id === 'form3') {
                         statusMessage.style.cssText = 'color: white;';
                         statusMessage.textContent = errorMessage;
                     } else {
                         statusMessage.textContent = errorMessage;
                     }
-                });
+                };
+
+                postData(body).then(outputData).catch(error);
             });
         });
 
-        const postData = (body, outputData, errorData) => {
-            // Создаем обьект XMLHttpRequest и присваиваем его переменной request
-            const request = new XMLHttpRequest();
-            // Вешаем обработчик события readystatechange (это событие срабатывает как только меняется статус readystate) на request
-            request.addEventListener('readystatechange', () => {
-                // Проверяем равняется ли статус 4 и если не ровняется мы выходим из этой функции
-                if (request.readyState !== 4) {
-                    return;
-                }
-                // Проверяем статус. Если запрос отправился успешно, то меняем сообщение на странице.
-                if (request.status === 200) {
-                    outputData();
-
-                } else { // иначе если пришел другой статус - выводим ошибку
-                    errorData(request.status);
-                }
+        const postData = (body) => {
+            return new Promise((resolve, reject) => {
+                // Создаем обьект XMLHttpRequest и присваиваем его переменной request
+                const request = new XMLHttpRequest();
+                // Вешаем обработчик события readystatechange (это событие срабатывает как только меняется статус readystate) на request
+                request.addEventListener('readystatechange', () => {
+                    // Проверяем равняется ли статус 4 и если не ровняется мы выходим из этой функции
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+                    // Проверяем статус. Если запрос отправился успешно, то меняем сообщение на странице.
+                    if (request.status === 200) {
+                        resolve();
+                    } else { // иначе если пришел другой статус - выводим ошибку
+                        reject(request.status);
+                    }
+                });
+                // Настраиваем запрос. Метод POST к нашему файлу server.php
+                request.open('POST', './server.php');
+                // Настраиваем наш заголовок
+                request.setRequestHeader('Content-Type', 'application/json');
+                // Переводим обьект body в JSON строку и отправляем на сервер
+                request.send(JSON.stringify(body));
             });
-            // Настраиваем запрос. Метод POST к нашему файлу server.php
-            request.open('POST', './server.php');
-            // Настраиваем наш заголовок
-            request.setRequestHeader('Content-Type', 'application/json');
-            // Переводим обьект body в JSON строку и отправляем на сервер
-            request.send(JSON.stringify(body));
         };
+
     };
 
     sendForm();
