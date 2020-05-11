@@ -364,7 +364,6 @@ window.addEventListener('DOMContentLoaded', () => {
     // send-ajax-form
 
     const sendForm = () => {
-
         // Сообщения которые уведомляют пользователя
         const errorMessage = 'Что-то пошло не так...',
             loadMessage = 'Загрузка...',
@@ -399,54 +398,28 @@ window.addEventListener('DOMContentLoaded', () => {
                     body[key] = item;
                 });
 
-                const outputData = () => {
-                    if (event.target.id === 'form3') {
-                        console.log('object');
-                        statusMessage.style.color = 'white';
-                        statusMessage.textContent = succesMessage;
-                        // После отправки инпуты должны очищаться
-                        form.reset();
-                    } else {
-                        statusMessage.textContent = succesMessage;
-                        // После отправки инпуты должны очищаться
-                        form.reset();
-                    }
-                }, error = (error) => {
-                    if (event.target.id === 'form3') {
-                        statusMessage.style.cssText = 'color: white;';
-                        statusMessage.textContent = errorMessage;
-                    } else {
-                        statusMessage.textContent = errorMessage;
-                    }
-                };
+                postData(body)
+                    .then((response) => {
+                        if (response.status !== 200) {
+                            throw new Error("status newtwork not 200");
+                        }
 
-                postData(body).then(outputData).catch(error);
+                        statusMessage.textContent = succesMessage;
+                    })
+                    .catch((error) => {
+                        statusMessage.textContent = errorMessage;
+                        console.error(error);
+                    });
             });
         });
 
         const postData = (body) => {
-            return new Promise((resolve, reject) => {
-                // Создаем обьект XMLHttpRequest и присваиваем его переменной request
-                const request = new XMLHttpRequest();
-                // Вешаем обработчик события readystatechange (это событие срабатывает как только меняется статус readystate) на request
-                request.addEventListener('readystatechange', () => {
-                    // Проверяем равняется ли статус 4 и если не ровняется мы выходим из этой функции
-                    if (request.readyState !== 4) {
-                        return;
-                    }
-                    // Проверяем статус. Если запрос отправился успешно, то меняем сообщение на странице.
-                    if (request.status === 200) {
-                        resolve();
-                    } else { // иначе если пришел другой статус - выводим ошибку
-                        reject(request.status);
-                    }
-                });
-                // Настраиваем запрос. Метод POST к нашему файлу server.php
-                request.open('POST', './server.php');
-                // Настраиваем наш заголовок
-                request.setRequestHeader('Content-Type', 'application/json');
-                // Переводим обьект body в JSON строку и отправляем на сервер
-                request.send(JSON.stringify(body));
+            return fetch("./server.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                body: JSON.stringify(body),
             });
         };
 
@@ -480,7 +453,5 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     validationField();
-
-
 
 });
