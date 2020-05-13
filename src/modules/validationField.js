@@ -5,7 +5,7 @@ const validationField = () => {
             const target = event.target;
 
             if (target.matches('#form1-phone') || target.matches('#form2-phone') || target.matches('#form3-phone')) {
-                const regexp = /^\+?(\d){0,18}$/g;
+                const regexp = /^\+?(\d){0,11}$/g;
                 if (!regexp.test(target.value)) {
                     target.value = '';
                 }

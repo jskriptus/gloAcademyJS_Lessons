@@ -31,11 +31,11 @@ const calculator = (price = 100) => {
         const intervalId = setInterval(() => {
             if (total >= i) {
                 totalValue.textContent = i;
-                i++;
+                i += 100;
             } else {
                 clearInterval(intervalId);
             }
-        }, 1);
+        }, 0.001);
 
     };
 

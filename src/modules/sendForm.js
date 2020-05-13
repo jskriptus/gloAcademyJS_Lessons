@@ -40,9 +40,16 @@ const sendForm = () => {
                     }
 
                     statusMessage.textContent = succesMessage;
+
+                    setTimeout(() => {
+                        statusMessage.textContent = '';
+                    }, 5000);
                 })
                 .catch((error) => {
                     statusMessage.textContent = errorMessage;
+                    setTimeout(() => {
+                        statusMessage.textContent = '';
+                    }, 5000);
                     console.error(error);
                 });
         });
