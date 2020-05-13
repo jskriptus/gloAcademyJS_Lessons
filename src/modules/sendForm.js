@@ -15,6 +15,15 @@ const sendForm = () => {
         form.addEventListener('submit', event => {
             // Убираем стандартное поведение браузера (перезагрузку страницы после нажатия кнопки "Отправить")
             event.preventDefault();
+
+            const regexp = /^\+?[78]([-()]*\d){10}$/ig;
+            const valid = regexp.test(form.querySelector('[name=user_phone]').value);
+            if (!valid) {
+                form.querySelector('[name=user_phone]').style.cssText = 'border: 1px solid red';
+                return;
+            }
+            form.querySelector('[name=user_phone]').style.cssText = '';
+
             // Добавляем ранее созданный элемент на страницу после формы
             form.insertAdjacentElement('afterend', statusMessage);
             // Добавляем сообщение на страницу уведомляющее пользователя о начале загрузки его данных
@@ -51,6 +60,13 @@ const sendForm = () => {
                         statusMessage.textContent = '';
                     }, 5000);
                     console.error(error);
+                });
+
+                // Очищаем инпуты
+                [...form.elements].forEach(elem => {
+                    if (elem.tagName.toLowerCase() === 'input') {
+                        elem.value = '';
+                    }
                 });
         });
     });

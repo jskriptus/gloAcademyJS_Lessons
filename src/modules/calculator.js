@@ -27,15 +27,7 @@ const calculator = (price = 100) => {
             total = price * typeValue * squareValue * countValue * dayValue;
         }
 
-        let i = 0;
-        const intervalId = setInterval(() => {
-            if (total >= i) {
-                totalValue.textContent = i;
-                i += 100;
-            } else {
-                clearInterval(intervalId);
-            }
-        }, 0.001);
+        totalValue.textContent = Math.floor(total);
 
     };
 
